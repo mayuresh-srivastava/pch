@@ -9,6 +9,7 @@ class ProjectHistoriesController < ApplicationController
   end
 
   def create
+    # authorize @project, :update_status? # authorization can be added through policy object for cleaner separation of concerns.
     @project_history = @project.project_histories.new(project_history_params)
     @project_history.user = current_user
     if @project_history.save
