@@ -1,0 +1,16 @@
+<h2>Edit Project Entry</h2>
+
+<%= form_with model: [@project, @project_history], local: true do |form| %>
+  <div>
+    <%= form.label :content, "Edit Content" %>
+    <%= form.text_area :content, required: true %>
+  </div>
+  <div>
+    <%= form.label :event_type, "Entry Type" %>
+    <%= form.select :event_type, ProjectHistory.event_types.keys.map { |type| [type.humanize, type] }, required: true %>
+  </div>
+  <div>
+    <%= form.submit "Update", class: "btn btn-success" %>
+    <%= link_to "Cancel", project_project_histories_path(@project), class: "btn btn-secondary" %>
+  </div>
+<% end %>

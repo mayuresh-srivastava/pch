@@ -1,0 +1,10 @@
+<h2>Projects</h2>
+<ul>
+  <% @projects.each do |project| %>
+    <li>
+      <%= project.created_at.strftime('%Y-%m-%d %H:%M') %>
+      <%= link_to project.name, project_project_histories_path(project) %>
+      <%= project.status.capitalize %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,30 @@
+<%= form_with model: [@project, ProjectHistory.new], remote: true do |form| %>
+  <div>
+    <%= form.label :content, "New Comment or Status Update" %>
+    <%= form.text_area :content, required: true %>
+  </div>
+  <div>
+    <%= form.label :event_type, "Event Type" %>
+    <%= form.select :event_type, ProjectHistory.event_types.keys.map { |type| [type.humanize, type] }, required: true %>
+  </div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<h2>Project Conversation History</h2>
+
+<div id="project-history">
+  <% @project_histories.each do |history| %>
+    <div class="history-entry">
+      <p><strong><%= history.user.email %></strong> - <%= history.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+      <p><%= history.event_type&.humanize %>: <%= history.content %></p>
+      <% if history.user == current_user %>
+        <div>
+          <%= button_to 'Edit', edit_project_project_history_path(@project, history), method: :get, class: "btn btn-warning" %>
+          <%= button_to 'Delete', project_project_history_path(@project, history), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
