@@ -4,6 +4,8 @@ class ProjectHistoriesController < ApplicationController
 
   def index
     @project_histories = @project.project_histories.includes(:user).order(created_at: :desc)
+    @filter = params[:filter]
+    @project_histories = @project_histories.filtered_by_type(@filter) if @filter.present?
   end
 
   def create

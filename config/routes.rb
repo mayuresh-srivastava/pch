@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   root "projects#index"
 
   resources :projects, only: %i[index show] do
-    resources :project_histories, only: %i[create index edit update destroy]
+    resources :project_histories, except: %i[new show]
   end
 end
