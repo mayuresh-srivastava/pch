@@ -8,7 +8,7 @@
     <%= form.select :event_type, ProjectHistory.event_types.keys.map { |type| [type.humanize, type] }, required: true %>
   </div>
   <div>
-    <%= form.submit 'Submit', class: 'btn btn-primary' %>
+    <%= form.submit 'Submit' %>
   </div>
 <% end %>
 
@@ -27,10 +27,12 @@
       <p><%= history.event_type&.humanize %>: <%= history.content %></p>
       <% if history.user == current_user %>
         <div>
-          <%= button_to 'Edit', edit_project_project_history_path(@project, history), method: :get, class: 'btn btn-warning' %>
-          <%= button_to 'Delete', project_project_history_path(@project, history), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          <%= button_to 'Edit', edit_project_project_history_path(@project, history), method: :get %>
+          <%= button_to 'Delete', project_project_history_path(@project, history), method: :delete, data: { confirm: 'Are you sure?' } %>
         </div>
       <% end %>
     </div>
   <% end %>
 </div>
+
+<%= link_to 'Back to Projects', root_path %>
