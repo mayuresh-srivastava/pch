@@ -6,6 +6,7 @@ ruby "3.1.6"
 gem 'devise', '~> 4.9'
 gem 'pg'
 gem 'pundit', '~> 2.4'
+gem 'will_paginate'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.1"
