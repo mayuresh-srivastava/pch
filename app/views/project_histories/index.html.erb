@@ -1,15 +1,23 @@
-<%= form_with model: [@project, ProjectHistory.new], remote: true do |form| %>
+<%= form_with model: [@project, ProjectHistory.new], url: add_comment_project_project_histories_path(@project), remote: true do |form| %>
   <div>
-    <%= form.label :content, 'New Comment or Status Update' %>
+    <%= form.label :content, "New Comment" %>
     <%= form.text_area :content, required: true %>
   </div>
   <div>
-    <%= form.label :event_type, 'Event Type' %>
-    <%= form.select :event_type, ProjectHistory.event_types.keys.map { |type| [type.humanize, type] }, required: true %>
+    <%= form.submit "Submit", class: "btn btn-primary" %>
   </div>
-  <div>
-    <%= form.submit 'Submit' %>
-  </div>
+<% end %>
+
+<% if current_user.admin? %>
+  <%= form_with url: change_status_project_project_histories_path(@project), remote: true do |form| %>
+    <div>
+      <%= form.label :content, "Change Project Status" %>
+      <%= form.select :content, Project.statuses.keys.map { |status| [status.humanize, status] }, required: true %>
+    </div>
+    <div>
+      <%= form.submit "Change Status", class: "btn btn-warning" %>
+    </div>
+  <% end %>
 <% end %>
 
 <h2>Filter History</h2>
@@ -23,13 +31,15 @@
 <div id='project-history'>
   <% @project_histories.each do |history| %>
     <div class='history-entry'>
-      <p><strong><%= history.user.email %></strong> - <%= history.created_at.strftime('%Y-%m-%d %H:%M') %></p>
-      <p><%= history.event_type&.humanize %>: <%= history.content %></p>
-      <% if history.user == current_user %>
+      <p><strong><%= history.user.email %></strong> - <%= history.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+      <% if history.user == current_user && history.comment? %>
+        <p>Comment: <%= history.content %></p>
         <div>
           <%= button_to 'Edit', edit_project_project_history_path(@project, history), method: :get %>
           <%= button_to 'Delete', project_project_history_path(@project, history), method: :delete, data: { confirm: 'Are you sure?' } %>
         </div>
+      <% elsif history.status? %>
+        <p>Status changed to: <strong><%= history.content.humanize %></strong></p>
       <% end %>
     </div>
   <% end %>

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   root "projects#index"
 
   resources :projects, only: %i[index show] do
-    resources :project_histories, except: %i[new show]
+    resources :project_histories, only: %i[index edit update destroy] do
+      post :add_comment, on: :collection
+      post :change_status, on: :collection
+    end
   end
 end
